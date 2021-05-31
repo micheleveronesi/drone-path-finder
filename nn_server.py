@@ -1,20 +1,28 @@
 import io
+import json
+
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
 import numpy as np
 import pickle
 from flask import Flask, request
 
+
+model = None
+app = Flask(__name__)
+
+
 class CPU_Unpickler(pickle.Unpickler):
     def find_class(self, module, name):
         if module == 'torch.storage' and name == '_load_from_bytes':
             return lambda b: torch.load(io.BytesIO(b), map_location='cpu')
-        else: return super().find_class(module, name)
+        else:
+            return super().find_class(module, name)
+
 
 class MLP(nn.Module):
-    def __init__(self, in_dim, layers_size, activation='sigmoid', lr=8e-1, 
+    def __init__(self, in_dim, layers_size, activation='sigmoid', lr=8e-1,
                  init_kind='zeros', dropout_rate=0.0):
         super(MLP, self).__init__()
         self.in_dim = in_dim
@@ -71,25 +79,31 @@ class MLP(nn.Module):
         x = self.layers(x)
         return x
 
-model = None
-app = Flask(__name__)
 
-@app.route("/predict/", methods = ["POST"])
-def predict():
+def load_model():
     global model
-    data = np.array(request.get_json()['reflectance']).astype(float)
-    if len(data) != 2000:
-        return "error"
-    if model == None:
-        print("MODEL LOADING")
+    if model is None:
+        print("Loading trained model...")
         with open("neural_network.pkl", "rb") as f:
             model = CPU_Unpickler(f).load()
-    device = torch.device("cpu")
-    x = torch.from_numpy(data).float().to(device)
+        print("Loaded")
+
+
+@app.route("/predict/", methods=["POST"])
+def predict():
+    global model
+    s = request.get_data().decode('utf8')
+    tmp = json.loads(s)["reflectance"]
+    print(tmp)
+    data = np.array(tmp).astype(float)
+    if len(data) != 2000:
+        return "error"
+    x = torch.from_numpy(data).float().to(torch.device("cpu"))
     pred = model(x).cpu().detach().numpy()
     class_pred = np.argmax(pred)
     return str(class_pred)
 
 
+load_model()
 if __name__ == '__main__':
-	app.run(debug=True)
+    app.run(debug=True)
