@@ -1,6 +1,5 @@
-package org.example;
+package org.example.controller;
 
-import java.sql.Ref;
 import java.util.List;
 
 public class Point {

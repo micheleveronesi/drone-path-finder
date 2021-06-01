@@ -1,15 +1,16 @@
 package org.example;
 
-import org.example.server.Server;
+import org.example.controller.Controller;
+
+import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
         try {
-            Server s = Server.buildServer(5050);
-            s.start();
-        }
-        catch(Exception e){
-            System.out.println("Failed to start server");
+            Controller c = Controller.buildController();
+            c.start();
+        } catch (IOException e) {
+            System.out.println("Failed to start");
         }
     }
 }
