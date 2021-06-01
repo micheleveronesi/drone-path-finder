@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.prediction.NeuralNetworkClient;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,11 +23,5 @@ public class NeuralNetworkClientTest {
     public void testPredictCorrect() {
         int result = nn.predict(reflectanceSample);
         assertTrue(result >= 0 && result < 7);
-    }
-
-    @Test
-    public void testPredictNoServer() {
-        int result = nn.predict(reflectanceSample);
-        assertTrue(result == -1);
     }
 }

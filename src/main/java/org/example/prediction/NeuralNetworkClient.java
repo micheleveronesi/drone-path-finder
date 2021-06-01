@@ -1,8 +1,6 @@
-package org.example;
+package org.example.prediction;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -11,8 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-public class NeuralNetworkClient {
+public class NeuralNetworkClient implements Client{
     private final URI uri;
     private final HttpClient client;
 
@@ -24,8 +21,10 @@ public class NeuralNetworkClient {
     private HttpRequest generateRequest(List<Double> reflectance) {
         Map<String, List<Double>> requestJson = new HashMap<>();
         requestJson.put("reflectance", reflectance);
-        String requestBody = requestJson.toString().replace('=', ':');
-        requestBody = requestBody.replace("reflectance", "\"reflectance\"");
+        String requestBody = requestJson
+                .toString()
+                .replace('=', ':')
+                .replace("reflectance", "\"reflectance\"");
         return HttpRequest.newBuilder()
                 .uri(this.uri)
                 .timeout(Duration.ofSeconds(10))
@@ -40,12 +39,11 @@ public class NeuralNetworkClient {
         HttpRequest request = generateRequest(reflectance);
         int result = -1;
         try {
-            HttpResponse<String> r = client.send(request, HttpResponse.BodyHandlers.ofString());
-            result = Integer.parseInt(r.body());
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            result = Integer.parseInt(response.body());
         } catch (Exception e) {
             System.out.println("Predizione fallita");
         }
         return result;
     }
-
 }

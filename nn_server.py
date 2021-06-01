@@ -92,10 +92,7 @@ def load_model():
 @app.route("/predict/", methods=["POST"])
 def predict():
     global model
-    s = request.get_data().decode('utf8')
-    tmp = json.loads(s)["reflectance"]
-    print(tmp)
-    data = np.array(tmp).astype(float)
+    data = np.array(json.loads(request.get_data().decode('utf8'))["reflectance"]).astype(float)
     if len(data) != 2000:
         return "error"
     x = torch.from_numpy(data).float().to(torch.device("cpu"))
