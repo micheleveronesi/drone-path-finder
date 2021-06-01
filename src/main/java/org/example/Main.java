@@ -1,14 +1,16 @@
 package org.example;
 
-import org.example.controller.Controller;
+import org.example.server.Server;
 
 import java.io.IOException;
 
 public class Main {
+    private static final int SERVER_PORT = 5050;
+
     public static void main(String[] args) {
         try {
-            Controller c = Controller.buildController();
-            c.start();
+            Server s = Server.buildServer(SERVER_PORT);
+            s.start();
         } catch (IOException e) {
             System.out.println("Failed to start");
         }

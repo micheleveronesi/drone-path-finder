@@ -1,26 +1,39 @@
 package org.example.controller;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Point {
     private final double latitude, longitude;
-    private final Reflectance reflectance;
+    private final int prediction;
+    private static final Map<Integer, String> classMap = new HashMap<>();
+
+    static {
+        classMap.put(0, "artificial_material");
+        classMap.put(1, "coating");
+        classMap.put(2, "liquid");
+        classMap.put(3, "mineral");
+        classMap.put(4, "organic_compound");
+        classMap.put(5, "soil");
+        classMap.put(6, "vegetation");
+    }
 
     private Point(double latitude,
                   double longitude,
-                  Reflectance reflectance) {
+                  int prediction) {
         this.latitude = latitude;
         this.longitude = longitude;
-        this.reflectance = reflectance;
+        this.prediction = prediction;
     }
 
-    public class PointFactory {
+    public static class Factory {
         private Double latitude, longitude;
-        private Reflectance reflectance;
-        private PointFactory(){
+        private Integer prediction;
+
+        private Factory(){
             this.latitude = null;
             this.longitude = null;
-            this.reflectance = null;
+            this.prediction = null;
         }
 
         public void withLatitude(double latitude){
@@ -31,24 +44,31 @@ public class Point {
             this.longitude = longitude;
         }
 
-        public void withReflectance(List<Double> reflectance) throws IllegalArgumentException{
-            Reflectance ref = Reflectance.build(reflectance);
-            this.reflectance = ref;
+        public void withPrediction(int prediction) throws IllegalArgumentException{
+            if(prediction<0 || prediction>6)
+                throw new IllegalArgumentException("Bad class");
+            this.prediction = prediction;
         }
 
         public Point build() throws IllegalStateException{
-            if(latitude == null || longitude == null || reflectance == null)
+            if(latitude == null || longitude == null || prediction == null)
                 throw new IllegalStateException("Missing some parameters");
-            return new Point(latitude, longitude, reflectance);
+            return new Point(latitude, longitude, prediction.intValue());
+        }
+
+        public void reset() {
+            latitude = null;
+            longitude = null;
+            prediction = null;
         }
     }
 
-    public PointFactory newFactory(){
-        return new PointFactory();
+    public static Factory newFactory(){
+        return new Factory();
     }
 
     public double getLatitude() { return latitude; }
     public double getLongitude() { return longitude; }
-    public Reflectance getReflectance() { return reflectance; }
-
+    public int getPredictionClass() { return prediction; }
+    public String getPredictionName() { return classMap.get(prediction); }
 }
