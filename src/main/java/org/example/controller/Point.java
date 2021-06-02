@@ -36,18 +36,21 @@ public class Point {
             this.prediction = null;
         }
 
-        public void withLatitude(double latitude){
+        public Factory withLatitude(double latitude){
             this.latitude = latitude;
+            return this;
         }
 
-        public void withLongitude(double longitude){
+        public Factory withLongitude(double longitude){
             this.longitude = longitude;
+            return this;
         }
 
-        public void withPrediction(int prediction) throws IllegalArgumentException{
+        public Factory withPrediction(int prediction) throws IllegalArgumentException{
             if(prediction<0 || prediction>6)
                 throw new IllegalArgumentException("Bad class");
             this.prediction = prediction;
+            return this;
         }
 
         public Point build() throws IllegalStateException{

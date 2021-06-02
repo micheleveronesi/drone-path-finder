@@ -36,9 +36,9 @@ public class Controller {
         Point.Factory factory = Point.newFactory();
         for (int i=0; i<size; ++i) {
             int prediction = neuralNetwork.predict(reflectances.get(i).getReflectanceList());
-            factory.withLatitude(latitudes.get(i).intValue());
-            factory.withLongitude(longitudes.get(i).intValue());
-            factory.withPrediction(prediction);
+            factory.withLatitude(latitudes.get(i).intValue())
+                .withLongitude(longitudes.get(i).intValue())
+                .withPrediction(prediction);
             Point p = factory.build();
             factory.reset();
             if(p.getPredictionName().equals("vegetation"))
@@ -53,13 +53,13 @@ public class Controller {
             // percorso a serpentina
             return null;
         }
-        /*
-        * TODO: trasformare le coordinate in un grafo, in cui i punti in vegetation
-        *       sono i nodi e gli archi hanno un costo proporzionale alla distanza tra i due punti.
-        *       Il punto di partenza è dato dai parametri della funzione, bisogna ritornare lì.
-        *       NB: Il grafo è fully connected
-        * */
-        return null;
+        Point start = Point.newFactory()
+                .withLatitude(latitude)
+                .withLongitude(longitude)
+                .withPrediction(-1)
+                .build();
+        Graph g = new Graph(vegetation, start);
+        return g.getPath();
     }
 
 }
