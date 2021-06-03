@@ -58,8 +58,7 @@ public class Controller {
                 .withLongitude(longitude)
                 .withPrediction(-1)
                 .build();
-        Graph g = new Graph(vegetation, start);
-        return g.getPath();
+        return new Graph(vegetation, start).getPath();
     }
 
 }

@@ -74,4 +74,9 @@ public class Point {
     public double getLongitude() { return longitude; }
     public int getPredictionClass() { return prediction; }
     public String getPredictionName() { return classMap.get(prediction); }
+
+    public boolean equals(Point p) {
+        return Double.compare(this.longitude, p.longitude) == 0 &&
+               Double.compare(this.latitude, p.latitude) == 0;
+    }
 }
