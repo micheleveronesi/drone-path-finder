@@ -14,7 +14,7 @@ public class Graph {
 
     private static int nearestPoint(Point from, List<Point> to) {
         int minIndex = -1;
-        double minDistance = -1;
+        double minDistance = Double.MAX_VALUE;
         for (int i=0; i < to.size(); ++i) {
             double currentDistance = calculateCost(from, to.get(i));
             if (Double.compare(currentDistance, minDistance) < 0) {
