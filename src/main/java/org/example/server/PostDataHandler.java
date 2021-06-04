@@ -2,7 +2,7 @@ package org.example.server;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.example.controller.Controller;
+import org.example.business.Controller;
 
 import java.io.IOException;
 

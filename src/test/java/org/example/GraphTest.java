@@ -1,7 +1,7 @@
 package org.example;
 
-import org.example.controller.Graph;
-import org.example.controller.Point;
+import org.example.business.Graph;
+import org.example.business.Point;
 import org.junit.Test;
 import org.junit.Assert;
 

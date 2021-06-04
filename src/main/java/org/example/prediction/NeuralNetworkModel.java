@@ -9,11 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class NeuralNetworkClient implements Client{
+public class NeuralNetworkModel implements Model {
     private final URI uri;
     private final HttpClient client;
 
-    public NeuralNetworkClient(String uri){
+    public NeuralNetworkModel(String uri){
         this.uri = URI.create(uri);
         this.client = HttpClient.newHttpClient();
     }

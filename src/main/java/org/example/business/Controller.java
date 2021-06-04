@@ -1,25 +1,25 @@
-package org.example.controller;
+package org.example.business;
 
-import org.example.prediction.Client;
-import org.example.prediction.NeuralNetworkClient;
+import org.example.prediction.Model;
+import org.example.prediction.NeuralNetworkModel;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
-    private final Client neuralNetwork;
+    private final Model neuralNetwork;
     private static final String PREDICTION_URI = "https://127.0.0.1:5000/predict";
     private final List<Point> vegetation, other;
 
-    private Controller(Client c) {
+    private Controller(Model c) {
         this.neuralNetwork = c;
         this.vegetation = new ArrayList<>();
         this.other = new ArrayList<>();
     }
 
     public static Controller buildController() throws IOException {
-        Client c = new NeuralNetworkClient(PREDICTION_URI);
+        Model c = new NeuralNetworkModel(PREDICTION_URI);
         return new Controller(c);
     }
 

@@ -1,20 +1,16 @@
 package org.example.server;
 
 import com.sun.net.httpserver.HttpServer;
-import org.example.controller.Controller;
+import org.example.business.Controller;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
 public class Server {
-    private final int port;
     private final HttpServer server;
-    private final Controller controller;
 
-    private Server(int port, HttpServer server, Controller controller) {
-        this.port = port;
+    private Server(HttpServer server) {
         this.server = server;
-        this.controller = controller;
     }
 
     public static Server buildServer(int port) throws IllegalArgumentException, IOException {
@@ -22,10 +18,10 @@ public class Server {
             throw new IllegalArgumentException("Bad port");
         Controller c = Controller.buildController();
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-        server.createContext("/getTrack", new GetTrackHandler(c));
-        server.createContext("/sendDatas", new PostDataHandler(c));
+        server.createContext("/track", new GetTrackHandler(c));
+        server.createContext("/data", new PostDataHandler(c));
         server.setExecutor(null);
-        return new Server(port, server, c);
+        return new Server(server);
     }
 
     public void start(){

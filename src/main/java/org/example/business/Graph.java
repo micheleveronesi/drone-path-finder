@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.business;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +36,9 @@ public class Graph {
             toVisit.add(p);
 
         List<Point> path = new ArrayList<>();
-        while(!toVisit.isEmpty()) { // O(n^2)
+        while(!toVisit.isEmpty()) {
             Point previous = path.isEmpty() ? start : path.get(path.size()-1);
-            int next = nearestPoint(previous, toVisit); // O(n)
+            int next = nearestPoint(previous, toVisit);
             path.add(toVisit.remove(next));
         }
         path.add(start);

@@ -1,4 +1,4 @@
-package org.example.controller;
+package org.example.business;
 
 import java.util.List;
 

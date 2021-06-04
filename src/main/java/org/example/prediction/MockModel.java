@@ -2,10 +2,10 @@ package org.example.prediction;
 
 import java.util.List;
 
-public class MockClient implements Client{
+public class MockModel implements Model {
     private boolean isOnline;
 
-    public MockClient(boolean isOnline){
+    public MockModel(boolean isOnline){
         this.isOnline = isOnline;
     }
 
