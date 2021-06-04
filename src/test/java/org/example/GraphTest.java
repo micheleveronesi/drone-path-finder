@@ -16,6 +16,7 @@ public class GraphTest {
 
     private void preLoadValues() {
         NODES.clear();
+        start = null;
         PATH.clear();
 
         Point.Factory f = Point.newFactory();
@@ -66,7 +67,6 @@ public class GraphTest {
         preLoadValues();
         Graph g = new Graph(NODES, start);
         List<Point> path = g.getPath();
-        System.out.println("path size: "+ path.size());
         Assert.assertTrue(path.size() == PATH.size());
         for(int i=0; i<path.size(); ++i)
             Assert.assertTrue(path.get(i).equals(PATH.get(i)));

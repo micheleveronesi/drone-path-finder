@@ -28,20 +28,20 @@ public class Controller {
                              List<Reflectance> reflectances)
             throws IllegalArgumentException {
 
-        if(latitudes.size() != longitudes.size() ||
-                longitudes.size() != reflectances.size()){
+        if (latitudes.size() != longitudes.size() ||
+                longitudes.size() != reflectances.size()) {
             throw new IllegalArgumentException("Bad sizes");
         }
         int size = latitudes.size();
         Point.Factory factory = Point.newFactory();
-        for (int i=0; i<size; ++i) {
+        for (int i = 0; i < size; ++i) {
             int prediction = neuralNetwork.predict(reflectances.get(i).getReflectanceList());
             factory.withLatitude(latitudes.get(i).intValue())
-                .withLongitude(longitudes.get(i).intValue())
-                .withPrediction(prediction);
+                    .withLongitude(longitudes.get(i).intValue())
+                    .withPrediction(prediction);
             Point p = factory.build();
             factory.reset();
-            if(p.getPredictionName().equals("vegetation"))
+            if (p.getPredictionName().equals("vegetation"))
                 vegetation.add(p);
             else
                 other.add(p);
@@ -49,16 +49,15 @@ public class Controller {
     }
 
     public List<Point> getTrack(int latitude, int longitude) {
-        if(vegetation.isEmpty()){
-            // percorso a serpentina
+        if (vegetation.isEmpty()){
+            // TODO: percorso a serpentina
             return null;
         }
         Point start = Point.newFactory()
                 .withLatitude(latitude)
                 .withLongitude(longitude)
-                .withPrediction(-1)
+                .withPrediction(0)
                 .build();
         return new Graph(vegetation, start).getPath();
     }
-
 }
