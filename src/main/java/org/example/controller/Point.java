@@ -79,4 +79,9 @@ public class Point {
         return Double.compare(this.longitude, p.longitude) == 0 &&
                Double.compare(this.latitude, p.latitude) == 0;
     }
+
+    @Override
+    public String toString() {
+        return "(" + latitude + "," + longitude + ")";
+    }
 }

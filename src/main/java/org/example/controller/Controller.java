@@ -48,7 +48,7 @@ public class Controller {
         }
     }
 
-    public List<Point> getTrack(int latitude, int longitude) {
+    public List<Point> getTrack(double latitude, double longitude) {
         if (vegetation.isEmpty()){
             // TODO: percorso a serpentina
             return null;
