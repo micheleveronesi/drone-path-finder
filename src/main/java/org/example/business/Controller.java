@@ -12,15 +12,17 @@ public class Controller {
     private final Model neuralNetwork;
     private static final String PREDICTION_URI = "https://127.0.0.1:5000/predict";
     private final List<Point> points, toVisit;
+    private final Perimeter perimeter;
 
-    private Controller(Model c) {
+    private Controller(Model c, Perimeter perimeter) {
         this.neuralNetwork = c;
         this.points = new ArrayList<>();
         this.toVisit = new ArrayList<>();
+        this.perimeter = perimeter;
     }
 
-    public static Controller buildController() throws IOException {
-        return new Controller(new NeuralNetworkModel(PREDICTION_URI));
+    public static Controller buildController(Perimeter perimeter) throws IOException {
+        return new Controller(new NeuralNetworkModel(PREDICTION_URI), perimeter);
     }
 
     public void updatePoints(List<Double> latitudes,

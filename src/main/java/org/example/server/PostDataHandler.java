@@ -7,10 +7,10 @@ import org.example.business.Controller;
 import java.io.IOException;
 
 public class PostDataHandler implements HttpHandler {
-    private final Controller c;
+    private final Server server;
 
-    public PostDataHandler(Controller c){
-        this.c = c;
+    public PostDataHandler(Server server){
+        this.server = server;
     }
 
     @Override

@@ -1,7 +1,9 @@
 package org.example;
 
 import org.example.business.Graph;
+import org.example.business.point.ArtificialMaterial;
 import org.example.business.point.Point;
+import org.example.business.point.Vegetation;
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -19,33 +21,12 @@ public class GraphTest {
         start = null;
         PATH.clear();
 
-        Point.Factory f = Point.newFactory();
-
-        f.withPrediction(0).withLatitude(0).withLongitude(0);
-        start = f.build();
-        f.reset();
-
-        f.withPrediction(6).withLatitude(4).withLongitude(0);
-        Point p1 = f.build();
-        f.reset();
-
-        f.withPrediction(6).withLatitude(4).withLongitude(8);
-        Point p2 = f.build();
-        f.reset();
-
-        f.withPrediction(6).withLatitude(-5).withLongitude(8);
-        Point p3 = f.build();
-        f.reset();
-
-        f.withPrediction(6).withLatitude(-5).withLongitude(12);
-        Point p4 = f.build();
-        f.reset();
-
-
-        f.withPrediction(6).withLatitude(-5).withLongitude(0);
-        Point p5 = f.build();
-        f.reset();
-
+        start = new ArtificialMaterial(0, 0);
+        Point p1 = new Vegetation(4, 0);
+        Point p2 = new Vegetation(4, 8);
+        Point p3 = new Vegetation(-5, 8);
+        Point p4 = new Vegetation(-5, 12);
+        Point p5 = new Vegetation(-5, 0);
 
         NODES.add(p5);
         NODES.add(p3);
