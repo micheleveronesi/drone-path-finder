@@ -3,7 +3,7 @@ package org.example.server;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.example.business.Controller;
-import org.example.business.Point;
+import org.example.business.point.Point;
 
 import java.io.IOException;
 import java.io.OutputStream;

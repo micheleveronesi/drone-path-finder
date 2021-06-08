@@ -1,5 +1,6 @@
 package org.example.business;
 
+import org.example.business.point.*;
 import org.example.prediction.Model;
 import org.example.prediction.NeuralNetworkModel;
 
@@ -10,17 +11,16 @@ import java.util.List;
 public class Controller {
     private final Model neuralNetwork;
     private static final String PREDICTION_URI = "https://127.0.0.1:5000/predict";
-    private final List<Point> vegetation, other;
+    private final List<Point> points, toVisit;
 
     private Controller(Model c) {
         this.neuralNetwork = c;
-        this.vegetation = new ArrayList<>();
-        this.other = new ArrayList<>();
+        this.points = new ArrayList<>();
+        this.toVisit = new ArrayList<>();
     }
 
     public static Controller buildController() throws IOException {
-        Model c = new NeuralNetworkModel(PREDICTION_URI);
-        return new Controller(c);
+        return new Controller(new NeuralNetworkModel(PREDICTION_URI));
     }
 
     public void updatePoints(List<Double> latitudes,
@@ -33,31 +33,37 @@ public class Controller {
             throw new IllegalArgumentException("Bad sizes");
         }
         int size = latitudes.size();
-        Point.Factory factory = Point.newFactory();
         for (int i = 0; i < size; ++i) {
             int prediction = neuralNetwork.predict(reflectances.get(i).getReflectanceList());
-            factory.withLatitude(latitudes.get(i).intValue())
-                    .withLongitude(longitudes.get(i).intValue())
-                    .withPrediction(prediction);
-            Point p = factory.build();
-            factory.reset();
-            if (p.getPredictionName().equals("vegetation"))
-                vegetation.add(p);
-            else
-                other.add(p);
+            points.add(buildPoint(prediction, latitudes.get(i), longitudes.get(i)));
         }
     }
 
     public List<Point> getTrack(double latitude, double longitude) {
-        if (vegetation.isEmpty()){
+        if (points.isEmpty()){
             // TODO: percorso a serpentina
             return null;
         }
-        Point start = Point.newFactory()
-                .withLatitude(latitude)
-                .withLongitude(longitude)
-                .withPrediction(0)
-                .build();
-        return new Graph(vegetation, start).getPath();
+        Point start = buildPoint(0, latitude, longitude);
+        updateToVisit();
+        return new Graph(toVisit, start).getPath();
+    }
+
+    private Point buildPoint(int prediction, double latitute, double longitude) {
+        switch(prediction){
+            case 0: return new ArtificialMaterial(latitute, longitude);
+            case 1: return new Coating(latitute, longitude);
+            case 2: return new Liquid(latitute, longitude);
+            case 3: return new Mineral(latitute, longitude);
+            case 4: return new OrganicCompound(latitute, longitude);
+            case 5: return new Soil(latitute, longitude);
+            case 6: return new Vegetation(latitute, longitude);
+            default: return null;
+        }
+    }
+
+    private void updateToVisit(){
+        toVisit.clear();
+        // TODO: calcolo punti da visitare all'istante dell'invocazione
     }
 }
