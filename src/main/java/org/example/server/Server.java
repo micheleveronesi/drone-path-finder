@@ -23,6 +23,7 @@ public class Server {
         Server s = new Server(server);
         server.createContext("/track", new GetTrackHandler(s));
         server.createContext("/data", new PostDataHandler(s));
+        server.createContext("/perimeter", new PatchPerimeterHandler(s));
         server.setExecutor(null);
         return s;
     }
@@ -31,7 +32,7 @@ public class Server {
         this.server.start();
     }
     public Controller getController() { return controller; }
-    public boolean setController(Perimeter perimeter) {
+    public boolean setControllerPerimeter(Perimeter perimeter) {
         Controller c = null;
         try {
             c = Controller.buildController(perimeter);

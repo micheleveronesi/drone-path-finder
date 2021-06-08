@@ -1,6 +1,9 @@
 package org.example.server;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import org.example.business.Perimeter;
@@ -21,12 +24,24 @@ public class PatchPerimeterHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         OutputStream os = exchange.getResponseBody();
         String response;
-        Gson g = new Gson();
         if (exchange.getRequestMethod().equalsIgnoreCase("patch")) {
             InputStream is = exchange.getRequestBody();
-            String input = new String(is.readAllBytes());
-            Perimeter p = g.fromJson(input, Perimeter.class);
-            response = server.setController(p) ? "success" : "error";
+            String jsonString = new String(is.readAllBytes());
+            JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
+            JsonArray points = json.getAsJsonArray("perimeter");
+            Perimeter.Factory f = Perimeter.getFactory();
+            for(JsonElement i : points) {
+                JsonObject current = i.getAsJsonObject();
+                double latitude = current.getAsJsonPrimitive("latitude").getAsDouble();
+                double longitude = current.getAsJsonPrimitive("longitude").getAsDouble();
+                f.addPoint(latitude, longitude);
+            }
+            try {
+                response = server.setControllerPerimeter(f.build()) ? "success" : "error";
+            }catch(IllegalStateException e) {
+                response = "error creating perimeter";
+            }
+
         }
         else
             response = "Only PATCH requests please";
