@@ -53,8 +53,8 @@ paths:
                 points:
                   [
                     {
-                      latitude: 20.21939
-                      longitude: 10.24083
+                      latitude: 20.21939,
+                      longitude: 10.24083,
                       reflectance:
                         [
                           1.2384,
@@ -77,12 +77,12 @@ paths:
                 }
         400:
           description: bad data
-            content:
-              application/json:
-                example:
-                  {
-                    message: "error"
-                  }
+          content:
+            application/json:
+              example:
+                {
+                  message: "error"
+                }
 
   /perimeter: # PatchPerimeterHandler
     patch:
@@ -108,17 +108,17 @@ paths:
       responses:
         200:
           description: success
-            content:
-              application/json:
-                example:
-                  {
-                    message: "success"
-                  }
+          content:
+            application/json:
+              example:
+                {
+                  message: "success"
+                }
             400:
               description: bad data
-                content:
-                  application/json:
-                    example:
-                      {
-                        message: "error"
-                      }
+              content:
+                application/json:
+                  example:
+                    {
+                      message: "error"
+                    }
