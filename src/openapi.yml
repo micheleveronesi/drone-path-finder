@@ -1,0 +1,124 @@
+openapi: 3.0.3
+info:
+  title: DronePathFinder
+  description: OpenAPI for interfacing drones with this program
+  version: 0.0.1
+
+paths:
+  /track:     # GetTrackHandler
+    get:
+      summary: get track
+      description: get the new track for the drones
+      tags:
+        - track
+      operationId: getTrack
+      parameters:
+        - in: query
+          name: latitude
+          schema:
+            type: number
+            format: float
+        - in: query
+          name: longitude
+          schema:
+            type: number
+            format: float
+      responses:
+        200:
+          description: track
+          content:
+            application/json:
+              example:
+                {
+                  track:
+                    [
+                      { latitude: 20.21372, longitude: 10.20839 },
+                      { latitude: 20.10483, longitude: 10.33495 }
+                    ]
+                }
+  /data:      # PostDataHandler
+    post:
+      summary: send data
+      description: send reflectance data from drone
+      tags:
+        - data
+        - reflectance
+      operationId: sendData
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              {
+                points:
+                  [
+                    {
+                      latitude: 20.21939
+                      longitude: 10.24083
+                      reflectance:
+                        [
+                          1.2384,
+                          1.3204,
+                          1.3949,
+                          1.3048
+                          # 2000 valori
+                        ]
+                    }
+                  ]
+              }
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              example:
+                {
+                  message: "success"
+                }
+        400:
+          description: bad data
+            content:
+              application/json:
+                example:
+                  {
+                    message: "error"
+                  }
+
+  /perimeter: # PatchPerimeterHandler
+    patch:
+      summary: set perimeter
+      description: set the perimeter of the area to scan
+      tags:
+        - perimeter
+      operationId: setPerimeter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              {
+                points:
+                  [
+                    { latitude: 20.21372, longitude: 10.20839 },
+                    { latitude: 20.10483, longitude: 10.33495 },
+                    { latitude: 20.29478, longitude: 10.24947 },
+                    { latitude: 20.13483, longitude: 10.39462 }
+                  ]
+              }
+      responses:
+        200:
+          description: success
+            content:
+              application/json:
+                example:
+                  {
+                    message: "success"
+                  }
+            400:
+              description: bad data
+                content:
+                  application/json:
+                    example:
+                      {
+                        message: "error"
+                      }

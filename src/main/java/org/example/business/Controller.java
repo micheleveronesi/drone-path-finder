@@ -14,15 +14,11 @@ public class Controller {
     private final List<Point> points, toVisit;
     private final Perimeter perimeter;
 
-    private Controller(Model c, Perimeter perimeter) {
-        this.neuralNetwork = c;
+    public Controller(Perimeter perimeter) throws IOException{
+        this.neuralNetwork = new NeuralNetworkModel(PREDICTION_URI);
         this.points = new ArrayList<>();
         this.toVisit = new ArrayList<>();
         this.perimeter = perimeter;
-    }
-
-    public static Controller buildController(Perimeter perimeter) throws IOException {
-        return new Controller(new NeuralNetworkModel(PREDICTION_URI), perimeter);
     }
 
     public void updatePoints(List<Double> latitudes,

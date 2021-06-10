@@ -35,7 +35,7 @@ public class Server {
     public boolean setControllerPerimeter(Perimeter perimeter) {
         Controller c = null;
         try {
-            c = Controller.buildController(perimeter);
+            c = new Controller(perimeter);
         } catch(IOException e) {
             System.out.println("Error building controller");
             e.printStackTrace();
