@@ -1,9 +1,10 @@
 package org.example.persistence;
 
-import org.example.business.point.Point;
+import org.example.business.Point;
 
 import java.util.List;
 
 public interface Persistence {
-    List<Point> getLastInstance();
+    Instance getLastInstance();
+    boolean saveInstance(Instance instance);
 }

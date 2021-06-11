@@ -1,6 +1,8 @@
 package org.example.business;
 
-import org.example.business.point.*;
+import org.example.persistence.FilePersistence;
+import org.example.persistence.Instance;
+import org.example.persistence.Persistence;
 import org.example.prediction.Model;
 import org.example.prediction.NeuralNetworkModel;
 
@@ -13,12 +15,14 @@ public class Controller {
     private static final String PREDICTION_URI = "https://127.0.0.1:5000/predict";
     private final List<Point> points, toVisit;
     private final Perimeter perimeter;
+    private final Persistence persistence;
 
     public Controller(Perimeter perimeter) throws IOException{
         this.neuralNetwork = new NeuralNetworkModel(PREDICTION_URI);
         this.points = new ArrayList<>();
         this.toVisit = new ArrayList<>();
         this.perimeter = perimeter;
+        this.persistence = new FilePersistence("database.txt");
     }
 
     public void updatePoints(List<Double> latitudes,
@@ -33,46 +37,31 @@ public class Controller {
         int prediction;
         for (int i = 0; i < latitudes.size(); ++i) {
             prediction = neuralNetwork.predict(reflectances.get(i).getReflectanceList());
-            points.add(buildPoint(prediction, latitudes.get(i), longitudes.get(i)));
+            points.add(new Point(latitudes.get(i), longitudes.get(i), prediction));
         }
+        persistence.saveInstance(new Instance(points));
     }
 
     public List<Point> getTrack(double latitude, double longitude) {
-        if (points.isEmpty())
-            return calculateSerpentineTrack();
-        Point start = buildPoint(-1, latitude, longitude);
+        Instance lastInstance = persistence.getLastInstance();
+        if(lastInstance.isTooOld()) { // non arrivano nuove riflettanze da troppo tempo
+            points.clear();
+            toVisit.clear();
+        }
+
+        if(points.isEmpty())
+            return new ArrayList<>(); // rifai il percorso a serpentina, ritorno un percorso vuoto
+
+        // calculate new track
+        Point start = new Point(latitude, longitude, -1);
         updateToVisit();
         return new Graph(toVisit, start).getPath();
     }
 
-    public static Point buildPoint(int prediction, double latitute, double longitude) {
-        switch(prediction){
-            case 0: return new ArtificialMaterial(latitute, longitude);
-            case 1: return new Coating(latitute, longitude);
-            case 2: return new Liquid(latitute, longitude);
-            case 3: return new Mineral(latitute, longitude);
-            case 4: return new OrganicCompound(latitute, longitude);
-            case 5: return new Soil(latitute, longitude);
-            case 6: return new Vegetation(latitute, longitude);
-            default: return new UndefinedMaterial(latitute, longitude);
-        }
-    }
-
     private void updateToVisit(){
         toVisit.clear();
-        // TODO: calcolo punti da visitare all'istante dell'invocazione
-    }
-
-    private List<Point> calculateSerpentineTrack() {
-        List<Point> line1 = new ArrayList<>();
-        List<Point> line2 = new ArrayList<>();
-
-
-        List<Point> serpentineTrack = new ArrayList<>();
-        for(int i = 0; i < line1.size(); ++i) {
-            serpentineTrack.add(line1.get(i));
-            serpentineTrack.add(line2.get(i));
-        }
-        return serpentineTrack;
+        for(Point p : points)
+            if(p.getMaterial() == Material.VEGETATION)
+                toVisit.add(p);
     }
 }

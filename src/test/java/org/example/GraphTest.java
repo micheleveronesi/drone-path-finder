@@ -1,12 +1,9 @@
 package org.example;
 
 import org.example.business.Graph;
-import org.example.business.point.ArtificialMaterial;
-import org.example.business.point.Point;
-import org.example.business.point.Vegetation;
+import org.example.business.Point;
 import org.junit.Test;
 import org.junit.Assert;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +18,12 @@ public class GraphTest {
         start = null;
         PATH.clear();
 
-        start = new ArtificialMaterial(0, 0);
-        Point p1 = new Vegetation(4, 0);
-        Point p2 = new Vegetation(4, 8);
-        Point p3 = new Vegetation(-5, 8);
-        Point p4 = new Vegetation(-5, 12);
-        Point p5 = new Vegetation(-5, 0);
+        start = new Point(0, 0, -1);
+        Point p1 = new Point(4, 0, 6);
+        Point p2 = new Point(4, 8, 6);
+        Point p3 = new Point(-5, 8, 6);
+        Point p4 = new Point(-5, 12, 6);
+        Point p5 = new Point(-5, 0, 6);
 
         NODES.add(p5);
         NODES.add(p3);

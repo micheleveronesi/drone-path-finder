@@ -1,7 +1,5 @@
 package org.example.business;
 
-import org.example.business.point.Point;
-
 import java.util.ArrayList;
 import java.util.List;
 
