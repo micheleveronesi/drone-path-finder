@@ -2,7 +2,6 @@ package org.example;
 
 import org.example.business.Perimeter;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -13,6 +12,8 @@ import java.util.List;
 public class PerimeterTest {
     private final List<Double> latitudes = new ArrayList<>(),
             longitudes = new ArrayList<>();
+    @Rule
+    private final ExpectedException exceptionRule = ExpectedException.none();
 
     public void initializeListsRectangle() {
         latitudes.clear();
@@ -57,9 +58,6 @@ public class PerimeterTest {
         Assert.assertTrue(Double.compare(p.getD().getLatitude(), latitudes.get(3)) == 0);
         Assert.assertTrue(Double.compare(p.getD().getLongitude(), longitudes.get(3)) == 0);
     }
-
-    @Rule
-    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Test
     public void buildPerimeterNotARectangle() {
