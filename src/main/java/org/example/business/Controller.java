@@ -17,7 +17,7 @@ public class Controller {
     private final Perimeter perimeter;
     private final Persistence persistence;
 
-    public Controller(Perimeter perimeter) throws IOException{
+    public Controller(Perimeter perimeter) throws IOException {
         this.neuralNetwork = new NeuralNetworkModel(PREDICTION_URI);
         this.points = new ArrayList<>();
         this.toVisit = new ArrayList<>();

@@ -9,10 +9,10 @@ public class Perimeter {
 
     private Perimeter(double latA, double latB, double latC, double latD,
                     double lonA, double lonB, double lonC, double lonD) {
-        this.a = Controller.buildPoint(-1, latA, lonA);
-        this.b = Controller.buildPoint(-1, latB, lonB);
-        this.c = Controller.buildPoint(-1, latC, lonC);
-        this.d = Controller.buildPoint(-1, latD, lonD);
+        this.a = new Point(latA, lonA, -1);
+        this.b = new Point(latB, lonB, -1);
+        this.c = new Point(latC, lonC, -1);
+        this.d = new Point(latD, lonD, -1);
     }
 
     public static class Factory {
@@ -34,8 +34,8 @@ public class Perimeter {
         }
 
         public Perimeter build() throws IllegalStateException {
-            if(latitudes.size() != 4)
-                throw new IllegalStateException("Points must be four in a perimeter");
+        if(latitudes.size() != 4)
+                throw new IllegalStateException("Points must be four in a rectangle perimeter");
             Perimeter p = new Perimeter(latitudes.get(0), latitudes.get(1), latitudes.get(2), latitudes.get(3),
                     longitudes.get(0), longitudes.get(1), longitudes.get(2), longitudes.get(3));
             if(!isRectangle(p))
@@ -48,10 +48,10 @@ public class Perimeter {
             double cLat, cLon, ddA, ddB, ddC, ddD;
             cLat = (p.a.getLatitude() + p.b.getLatitude() + p.c.getLatitude() + p.d.getLatitude()) / 4.0;
             cLon = (p.a.getLongitude() + p.b.getLongitude() + p.c.getLongitude() + p.d.getLongitude()) / 4.0;
-            ddA = Math.sqrt(cLat - p.a.getLatitude()) + Math.sqrt(cLon - p.a.getLongitude());
-            ddB = Math.sqrt(cLat - p.b.getLatitude()) + Math.sqrt(cLon - p.b.getLongitude());
-            ddC = Math.sqrt(cLat - p.c.getLatitude()) + Math.sqrt(cLon - p.c.getLongitude());
-            ddD = Math.sqrt(cLat - p.d.getLatitude()) + Math.sqrt(cLon - p.d.getLongitude());
+            ddA = Math.sqrt(Math.abs(cLat - p.a.getLatitude())) + Math.sqrt(Math.abs(cLon - p.a.getLongitude()));
+            ddB = Math.sqrt(Math.abs(cLat - p.b.getLatitude())) + Math.sqrt(Math.abs(cLon - p.b.getLongitude()));
+            ddC = Math.sqrt(Math.abs(cLat - p.c.getLatitude())) + Math.sqrt(Math.abs(cLon - p.c.getLongitude()));
+            ddD = Math.sqrt(Math.abs(cLat - p.d.getLatitude())) + Math.sqrt(Math.abs(cLon - p.d.getLongitude()));
             return Double.compare(ddA, ddB) == 0 &&
                    Double.compare(ddA, ddC) == 0 &&
                    Double.compare(ddA, ddD) == 0;
