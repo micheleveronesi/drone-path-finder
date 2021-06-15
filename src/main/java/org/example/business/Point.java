@@ -1,8 +1,5 @@
 package org.example.business;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Point {
     private final double latitude, longitude;
     private final Material material;

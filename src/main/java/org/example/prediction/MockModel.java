@@ -8,6 +8,7 @@ public class MockModel implements Model {
     public MockModel(boolean isOnline){
         this.isOnline = isOnline;
     }
+    public MockModel() {this.isOnline = true; }
 
     public void setOnline() {
         isOnline = true;
