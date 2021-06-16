@@ -1,0 +1,15 @@
+dist: focal
+group: edge
+language: java
+sudo: required
+jdk: openjdk11
+cache:
+directories:
+  - $HOME/.m2
+script:
+  - mvn clean install
+branches:
+  only:
+    - /.*/
+after_success:
+  - mvn clean test jacoco:report coveralls:report

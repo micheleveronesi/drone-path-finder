@@ -13,7 +13,7 @@ public class PerimeterTest {
     private final List<Double> latitudes = new ArrayList<>(),
             longitudes = new ArrayList<>();
     @Rule
-    private final ExpectedException exceptionRule = ExpectedException.none();
+    public final ExpectedException exceptionRule = ExpectedException.none();
 
     public void initializeListsRectangle() {
         latitudes.clear();
