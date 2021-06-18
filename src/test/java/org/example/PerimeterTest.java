@@ -66,7 +66,6 @@ public class PerimeterTest {
         for(int i=0; i<latitudes.size(); ++i)
             f.addPoint(latitudes.get(i), longitudes.get(i));
         exceptionRule.expect(IllegalStateException.class);
-        exceptionRule.expectMessage("This is not a rectangle");
         Perimeter p = f.build();
     }
 
@@ -75,7 +74,6 @@ public class PerimeterTest {
         Perimeter.Factory f = Perimeter.getFactory();
         f.addPoint(0, 0);
         exceptionRule.expect(IllegalStateException.class);
-        exceptionRule.expectMessage("Points must be four in a rectangle perimeter");
-        Perimeter p = f.build();
+        f.build();
     }
 }

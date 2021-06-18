@@ -30,7 +30,6 @@ public class ReflectanceTest {
         ref.clear();
         ref.add(Math.random());
         exceptionRule.expect(IllegalArgumentException.class);
-        exceptionRule.expectMessage("Bad features");
         Reflectance r = Reflectance.build(ref);
     }
 
@@ -41,7 +40,6 @@ public class ReflectanceTest {
             ref.add(Math.random());
         ref.add(-0.00001);
         exceptionRule.expect(IllegalArgumentException.class);
-        exceptionRule.expectMessage("Found negative value");
         Reflectance r = Reflectance.build(ref);
     }
 
