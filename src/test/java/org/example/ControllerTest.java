@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.business.Controller;
 import org.example.business.Perimeter;
+import org.example.business.Point;
 import org.example.persistence.PersistenceMock;
 import org.example.prediction.MockModel;
 import org.junit.Assert;
@@ -66,7 +67,15 @@ public class ControllerTest {
     }
 
     @Test
-    public void getTrackTest() {
-
+    public void getEmptyTrackTest() {
+        Controller.Factory f = new Controller.Factory();
+        f.withModel(new MockModel())
+                .withPersistence(new PersistenceMock())
+                .withPoints(new ArrayList<>())
+                .withPointsToVisit(new ArrayList<>())
+                .withPerimeter(this.p);
+        Controller c = f.build();
+        List<Point> track = c.getTrack(0, 0);
+        Assert.assertTrue(track != null);
     }
 }
