@@ -2,6 +2,9 @@ package org.example.business;
 
 import java.util.List;
 
+/**
+ * Rappresenta una firma spettrale di un oggetto. Questa deve essere composta da 2000 valori.
+ * */
 public class Reflectance {
     private final List<Double> reflectance;
     public static final int NUMBER_OF_FEATURES = 2000;
